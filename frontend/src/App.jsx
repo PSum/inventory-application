@@ -5,6 +5,7 @@ import axios from 'axios';
 function App() {
   const [count, setCount] = useState(0)
   const [catalog, setCatalog] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 function Catalog () {
   const fetchCatalog = async () => {
@@ -16,9 +17,26 @@ function Catalog () {
     console.log("Error fetching data", error);
   }
   }
-  useEffect(()=>{
+  //useEffect(()=>{
+    //fetchCatalog();
+  //},[])
+  if (loading == true ){
     fetchCatalog();
-  },[])
+    setLoading(false);
+  }
+
+  const printElement = catalog.map((item) => {
+    return (<div key={item.id}>
+      <div>{item.text}</div>
+      <div>{item.price}</div>
+      <div>{item.description}</div>
+    </div>)
+  });
+
+  return (
+    printElement
+  )
+
 }
 
 
