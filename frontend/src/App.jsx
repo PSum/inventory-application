@@ -5,25 +5,23 @@ import axios from 'axios';
 function App() {
   const [count, setCount] = useState(0)
   const [catalog, setCatalog] = useState([]);
-  const [loading, setLoading] = useState(true);
 
 function Catalog () {
+  const [loading, setLoading] = useState(true);
   const fetchCatalog = async () => {
   try {
     const response = await axios.get('http://localhost:3000');
     setCatalog(response.data);
-    console.log(response.data);
+    setLoading(false);
   } catch (error){
     console.log("Error fetching data", error);
-  }
-  }
-  //useEffect(()=>{
-    //fetchCatalog();
-  //},[])
-  if (loading == true ){
-    fetchCatalog();
     setLoading(false);
   }
+  }
+
+  useEffect(()=>{
+    fetchCatalog();
+  },[])
 
   const printElement = catalog.map((item) => {
     return (<div key={item.id}>
