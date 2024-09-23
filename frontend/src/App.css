@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.Eintrag {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  border: 1px black solid;
+}

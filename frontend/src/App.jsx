@@ -3,8 +3,39 @@ import './App.css'
 import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
   const [catalog, setCatalog] = useState([]);
+
+
+  function AddItems () {
+  const [formData, setFormData] = useState({name: "",email: "",message: ""});
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`Name of item: ${formData.name}, Price: ${formData.email}, Description: ${formData.message}`
+    );
+};
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">Name of item:</label>
+      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}/>
+
+      <label htmlFor="email">Price:</label>
+      <input type="number" id="email" name="email" value={formData.email} onChange={handleChange}/>
+
+      <label htmlFor="message">Description:</label>
+      <textarea id="message" name="message" value={formData.message} onChange={handleChange}/>
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+  }
+
 
 function Catalog () {
   const [loading, setLoading] = useState(true);
@@ -20,12 +51,11 @@ function Catalog () {
   }
 
   useEffect(()=>{
-    fetchCatalog();
   },[])
 
   const printElement = catalog.map((item) => {
-    return (<div key={item.id}>
-      <div>{item.text}</div>
+    return (<div className='Eintrag' key={item.id}>
+      <div>{item.item}</div>
       <div>{item.price}</div>
       <div>{item.description}</div>
     </div>)
@@ -41,6 +71,7 @@ function Catalog () {
   return (
     <>
     <Catalog></Catalog>
+    <AddItems></AddItems>
     </>
   )
 }
