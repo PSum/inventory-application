@@ -3,9 +3,6 @@ import './App.css'
 import axios from 'axios';
 
 function App() {
-  const [catalog, setCatalog] = useState([]);
-
-
   function AddItems () {
   const [formData, setFormData] = useState({name: "",email: "",message: ""});
 
@@ -37,35 +34,46 @@ function App() {
   }
 
 
-function Catalog () {
+function Catalog() {
   const [loading, setLoading] = useState(true);
-  const fetchCatalog = async () => {
-  try {
-    const response = await axios.get('http://localhost:3000');
-    setCatalog(response.data);
-    setLoading(false);
-  } catch (error){
-    console.log("Error fetching data", error);
-    setLoading(false);
-  }
-  }
+  const [catalog, setCatalog] = useState([]); // Moved inside the Catalog component
 
-  useEffect(()=>{
-  },[])
+  const fetchCatalog = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000');
+      
+      // Only update state if new data is different from current data
+      if (JSON.stringify(response.data) !== JSON.stringify(catalog)) {
+        setCatalog(response.data);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log("Error fetching data", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCatalog();
+  }, []); // Empty dependency array means it runs only once on mount
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const printElement = catalog.map((item) => {
-    return (<div className='Eintrag' key={item.id}>
-      <div>{item.item}</div>
-      <div>{item.price}</div>
-      <div>{item.description}</div>
-    </div>)
+    return (
+      <div className='Eintrag' key={item.id}>
+        <div>{item.item}</div>
+        <div>{item.price}</div>
+        <div>{item.description}</div>
+      </div>
+    );
   });
 
-  return (
-    printElement
-  )
-
+  return <div>{printElement}</div>;
 }
+
 
 
   return (
