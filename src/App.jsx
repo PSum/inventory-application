@@ -2,39 +2,10 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios';
 
+// Todo: Add different files
+// Add Obisidian entry for git branching
+
 function App() {
-  function AddItems () {
-  const [formData, setFormData] = useState({name: "",email: "",message: ""});
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert(`Name of item: ${formData.name}, Price: ${formData.email}, Description: ${formData.message}`
-    );
-};
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name of item:</label>
-      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}/>
-
-      <label htmlFor="email">Price:</label>
-      <input type="number" id="email" name="email" value={formData.email} onChange={handleChange}/>
-
-      <label htmlFor="message">Description:</label>
-      <textarea id="message" name="message" value={formData.message} onChange={handleChange}/>
-
-      <button type="submit">Submit</button>
-    </form>
-  );
-  }
-
-
-function Catalog() {
   const [loading, setLoading] = useState(true);
   const [catalog, setCatalog] = useState([]); // Moved inside the Catalog component
 
@@ -57,6 +28,52 @@ function Catalog() {
     fetchCatalog();
   }, []); // Empty dependency array means it runs only once on mount
 
+
+  function AddItems ({onItemAdded}) {
+  const [formData, setFormData] = useState({name: "",email: "",message: ""});
+    console.log(formData.name)
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  };
+
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+    const itemName = formData.name;
+    const price = formData.email;
+    const description = formData.description;
+    try{
+      const response = await axios.post('http://localhost:3000/addItem', {
+        item: itemName,
+        price: price,
+        description: description,
+      });
+      console.log(response);
+      onItemAdded();
+    }
+      catch (error){
+        console.log(error);
+      }
+    };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">Name of item:</label>
+      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}/>
+
+      <label htmlFor="email">Price:</label>
+      <input type="number" id="email" name="email" value={formData.email} onChange={handleChange}/>
+
+      <label htmlFor="message">Description:</label>
+      <textarea id="message" name="message" value={formData.message} onChange={handleChange}/>
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+  }
+
+
+function Catalog() {
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -74,12 +91,10 @@ function Catalog() {
   return <div>{printElement}</div>;
 }
 
-
-
   return (
     <>
     <Catalog></Catalog>
-    <AddItems></AddItems>
+    <AddItems onItemAdded={fetchCatalog}></AddItems>
     </>
   )
 }
