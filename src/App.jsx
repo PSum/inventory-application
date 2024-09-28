@@ -3,6 +3,7 @@ import './App.css'
 import axios from 'axios'
 import AddItems from './AddItems'
 import Catalog from './Catalog'
+import RemoveItems from './RemoveItems'
 
 // Add Obisidian entry for git branching
 
@@ -30,10 +31,11 @@ function App() {
   }, []); // Empty dependency array means it runs only once on mount
 
   return (
-    <>
+    <div className='contents'>
     <Catalog isLoading={loading} catalog={catalog}></Catalog>
     <AddItems onItemAdded={fetchCatalog}></AddItems>
-    </>
+    <RemoveItems></RemoveItems>
+    </div>
   )
 }
 
