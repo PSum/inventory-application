@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
   export default function AddItems ({onItemAdded}) {
-  const [formData, setFormData] = useState({name: "",email: "",message: ""});
+  const [formData, setFormData] = useState({item: "",price: "",description: ""});
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
@@ -10,8 +10,8 @@ import axios from 'axios'
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-    const itemName = formData.name;
-    const price = formData.email;
+    const itemName = formData.item;
+    const price = formData.price;
     const description = formData.description;
     try{
       const response = await axios.post('http://localhost:3000/addItem', {
@@ -28,14 +28,14 @@ import axios from 'axios'
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name of item:</label>
-      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}/>
+      <label htmlFor="item">Name of item:</label>
+      <input type="text" id="item" name="item" value={formData.item} onChange={handleChange}/>
 
-      <label htmlFor="email">Price:</label>
-      <input type="number" id="email" name="email" value={formData.email} onChange={handleChange}/>
+      <label htmlFor="price">Price:</label>
+      <input type="number" id="price" name="price" value={formData.price} onChange={handleChange}/>
 
-      <label htmlFor="message">Description:</label>
-      <textarea id="message" name="message" value={formData.message} onChange={handleChange}/>
+      <label htmlFor="description">Description:</label>
+      <textarea id="description" name="description" value={formData.description} onChange={handleChange}/>
 
       <button type="submit">Submit</button>
     </form>

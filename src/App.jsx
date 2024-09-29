@@ -34,7 +34,7 @@ function App() {
     <div className='contents'>
     <Catalog isLoading={loading} catalog={catalog}></Catalog>
     <AddItems onItemAdded={fetchCatalog}></AddItems>
-    <RemoveItems></RemoveItems>
+    <RemoveItems onItemRemoved={fetchCatalog}></RemoveItems>
     </div>
   )
 }

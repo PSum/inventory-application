@@ -1,7 +1,8 @@
 import {useState} from 'react';
-// todo: add delete route to backend and finish handleSubmit function so it actually deletes the searched Item
+import axios from 'axios';
+// todo: learn how to use grid with css again
 
-export default function RemoveItems (){
+export default function RemoveItems ({onItemRemoved}){
     const [formData, setFormData] = useState("");
   const handleChange = (event) => {
     const { value } = event.target;
@@ -10,17 +11,15 @@ export default function RemoveItems (){
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-//    try{
-//      const response = await axios.post('http://localhost:3000/addItem', {
-//        item: itemName,
-//        price: price,
-//        description: description,
-//      });
-//      onItemAdded();
-//    }
-//      catch (error){
-//        console.log(error);
-//      }
+    try{
+      await axios.delete('http://localhost:3000/deleteItem', {
+        params: {itemName: formData}
+      });
+      onItemRemoved();
+    }
+      catch (error){
+        console.log(error);
+      }
     };
 
   return (
